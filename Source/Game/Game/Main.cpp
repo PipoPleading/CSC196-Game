@@ -1,50 +1,76 @@
-#include "Core/Random.h"
-#include "Core/FileIO.h"
-#include "Core/Memory.h"
-#include "Core/Time.h"
+#include "Core/Core.h"
 #include "Renderer/Renderer.h"
 #include <iostream>
-//#include <chrono>
-// "#" is preprocessor directive
+#include <vector>
+
 using namespace std;
 
+using namespace kiko;//vec2 = kiko::Vector2;
 
-int main() 
+class Star
 {
-	kiko::g_memoryTracker.DisplayInfo();
-	int* p = new int; //overload
-	kiko::g_memoryTracker.DisplayInfo();
-	delete p;
-	kiko::g_memoryTracker.DisplayInfo();
+public:
+	Star(kiko::Vector2& pos, const kiko::Vector2& vel) :
+		m_pos{ pos },
+		m_vel{ vel }
+	{}
 
-	kiko::Time timer;
-	for (int i = 0; i < 1000000; i++) {}
-	cout << timer.GetElapsedMilliseconds() << endl;
+	void Update(int width, int height)
+	{
+		m_pos += m_vel;
+		if (m_pos.x >= width) m_pos.x = 0;
+		if (m_pos.y >= height) m_pos.y = 0;
+	}
 
-	//auto i = true;
-	//auto start = chrono::high_resolution_clock::now();
-	//for (int i = 0; i < 1000000; i++) {}
-	//auto end = std::chrono::high_resolution_clock::now();
+	void Draw(kiko::Renderer& renderer)
+	{
+		renderer.DrawPoint(m_pos.x, m_pos.y);
+	}
 
-	//cout << chrono::duration_cast<chrono::nanoseconds>(end - start).count() << endl;
+public:
+	kiko::Vector2 m_pos;
+	kiko::Vector2 m_vel;
 
-
-
-	//cout << kiko::getFilePath() << endl;
-	//kiko::setFilePath("Assets"); //not case sensitive "../"
-	//cout << kiko::getFilePath() << endl;
-	//size_t size = 0;
-	//kiko::getFileSize("game.txt", size);
-	//cout << "Size: " << size << endl;
-
-	//std::string s;
-	//kiko::readFile("game.txt", s);
-	//cout << s << endl;
+};
 
 
-	//kiko::seed_random((unsigned int)time(nullptr));
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	cout << kiko::random(10, 20) << endl;
-	//}
+int main(int argc, char* argv[])
+{
+	kiko::seed_random((unsigned int)time(nullptr));//do this 
+
+	kiko::Renderer renderer;
+	renderer.Initialize();
+	renderer.CreateWindow("CSC196", 800, 600);
+
+	vector<Star> stars;
+	//kiko::Vector2 vec2;
+	for (int i = 0; i < 1000; i++) {
+		kiko::Vector2 pos(Vector2(kiko::random(renderer.GetWidth()), kiko::random(renderer.GetHeight())));
+		kiko::Vector2 vel(randomf(1, 4), 0.0f);
+
+		stars.push_back(Star(pos, vel));
+	}
+
+	//cout << kiko::randomf() << endl;
+
+	
+
+	while (true) {
+		renderer.SetColor(0, 0, 0, 0);
+		renderer.BeginFrame();
+		//draw
+		kiko::Vector2 vel(1.0f, 0.3f);
+
+		for (auto& star : stars) {
+			star.Update(renderer.GetWidth(), renderer.GetHeight());
+
+			renderer.SetColor(kiko::random(256), kiko::random(256), kiko::random(256), 255);
+			
+			star.Draw(renderer);
+		}
+		
+		renderer.EndFrame();
+	}
+
+	//return 0;
 }
