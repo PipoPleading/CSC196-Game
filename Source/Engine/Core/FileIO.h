@@ -9,7 +9,7 @@ namespace kiko
 
 	bool fileExists(const std::filesystem::path& path);
 	bool getFileSize(const std::filesystem::path& path, size_t& size);
-	bool readFile(const std::filesystem::path& path, std::string buffer);
+	bool readFile(const std::filesystem::path& path, std::string& buffer);
 	
 
 

@@ -25,10 +25,10 @@ namespace kiko
 		std::error_code ec;
 		size = std::filesystem::file_size(path, ec);
 
-		return false;
+		return ec.value() == 0;
 	}
 
-	bool readFile(const std::filesystem::path& path, std::string buffer)
+	bool readFile(const std::filesystem::path& path, std::string& buffer)
 	{
 		if (!fileExists(path)) return false;
 
