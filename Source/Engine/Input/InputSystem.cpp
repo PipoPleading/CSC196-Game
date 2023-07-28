@@ -38,6 +38,10 @@ namespace kiko
 		int x, y;
 		uint32_t buttons = SDL_GetMouseState(&x, &y);
 		m_mousePosition = Vector2{ x , y };
+
+		//m_actorPosition = Vector2{ x , y };
+		//m_prevActorPosition = m_actorPosition;
+
 		m_prevMouseButtonState = m_mouseButtonState;
 		m_mouseButtonState[0] = buttons & SDL_BUTTON_LMASK; // buttons [0001] & [0RML]
 		m_mouseButtonState[1] = buttons & SDL_BUTTON_MMASK; // buttons [0010] & [0RML]
