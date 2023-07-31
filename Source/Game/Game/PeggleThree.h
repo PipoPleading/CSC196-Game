@@ -2,6 +2,7 @@
 #include "Framework/Game.h"
 #include "Renderer/Text.h"
 
+
 class SpaceGame : public kiko::Game
 {
 public:

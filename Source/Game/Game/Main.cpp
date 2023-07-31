@@ -9,7 +9,6 @@
 #include "Renderer/Text.h"
 #include "Renderer/ParticleSystem.h"
 
-
 #include "PeggleThree.h"
 
 #include "Input/InputSystem.h"
